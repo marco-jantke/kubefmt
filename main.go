@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 
 	"io"
@@ -9,11 +8,12 @@ import (
 
 	"io/ioutil"
 
+	flag "github.com/spf13/pflag"
 	yaml "gopkg.in/yaml.v2"
 )
 
 func main() {
-	file := flag.String("file", "", "file")
+	file := flag.StringP("file", "f", "", "file")
 	flag.Parse()
 
 	var input io.Reader = os.Stdin
