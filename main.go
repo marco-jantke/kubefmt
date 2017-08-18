@@ -3,6 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
+
+	"io"
+	"os"
+
 	"io/ioutil"
 
 	yaml "gopkg.in/yaml.v2"
@@ -12,13 +16,23 @@ func main() {
 	file := flag.String("file", "", "file")
 	flag.Parse()
 
-	fileBytes, err := ioutil.ReadFile(*file)
+	var input io.Reader = os.Stdin
+	var err error
+
+	if *file != "" {
+		input, err = os.Open(*file)
+		if err != nil {
+			panic(fmt.Sprintf("error opening input file: %s", err))
+		}
+	}
+
+	inputYaml, err := ioutil.ReadAll(input)
 	if err != nil {
-		panic(fmt.Sprintf("error reading input file: %s", err))
+		panic(fmt.Sprintf("error reading yaml content: %s", err))
 	}
 
 	var yamlContent interface{}
-	if err = yaml.Unmarshal(fileBytes, &yamlContent); err != nil {
+	if err = yaml.Unmarshal(inputYaml, &yamlContent); err != nil {
 		panic(fmt.Sprintf("error unmarshaling into yaml: %s", err))
 	}
 
