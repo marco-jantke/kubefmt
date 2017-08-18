@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+ name: sample-pod
+ labels:
+   name: sample-label
+spec:
+  containers:
+    - image: ubuntu
+      name: sample-container
+      ports:
+        - containerPort: 8080
